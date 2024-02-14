@@ -6,6 +6,9 @@ class Character(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
+    created_at = db.Column(db.DateTime, server_default = func.now())
+    updated_at = db.Column(db.DateTime, onupdate = func.now())
+
 
 class Inventory(db.Model):
     __tablename__ = "inventories"
