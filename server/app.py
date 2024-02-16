@@ -5,7 +5,15 @@ from models import db, Character, Inventory
 
 
 def display_welcome_message():
-  print("[green]Welcome to my app. [bold Green]This will be changed.[bold green/][green/]")
+  print("""
+  _________ __               .__  .__       .__     __      _________                     __                 
+ /   _____//  |______ _______|  | |__| ____ |  |___/  |_   /   _____/____    ____   _____/  |_ __ __  _____  
+ \_____  \\   __\__  \\_  __ \  | |  |/ ___\|  |  \   __\  \_____  \\__  \  /    \_/ ___\   __\  |  \/     \ 
+ /        \|  |  / __ \|  | \/  |_|  / /_/  >   Y  \  |    /        \/ __ \|   |  \  \___|  | |  |  /  Y Y  \\
+/_______  /|__| (____  /__|  |____/__\___  /|___|  /__|   /_______  (____  /___|  /\___  >__| |____/|__|_|  /
+        \/           \/             /_____/      \/               \/     \/     \/     \/                 \/ 
+""")
+
 
 def display_main_menu():
   print("[bold green]Main Menu:[bold green/][green/]")
@@ -23,8 +31,8 @@ def display_all_characters():
     for character in characters:
       print(f"{character.name}")
     print("[bold green]What would you like to do?[bold green/]")
-    print("[green]1. See Character's info.[green/]")
-    print("[green]2. Return to main menu.[bold green/]")
+    print("[bold green]1. See Character's info.[green/]")
+    print("[bold green]2. Return to main menu.[bold green/]")
     print("[bold green]3. Exit.[bold green/][green/]")
     choice = input("Enter your choice: ")
     if choice == "1":
@@ -61,9 +69,9 @@ def display_character_menu(character):
   elif choice == "4":
     new_name = input("Enter the new name for your character: ")
     change_character_name(character, new_name)
-  elif choice == "2":
+  elif choice == "5":
     display_main_menu()
-  elif choice == "3":
+  elif choice == "6":
     print("[bold green]Exiting the app.[bold green/][green/]")
     exit()
   else:
@@ -134,12 +142,13 @@ if __name__ == "__main__":
       elif choice == "2":
         print(display_all_characters())
       elif choice == "3":
-        print("[bold green]Exiting the app.[bold green/][green/]")
+       print("[bold green]Exiting the app.[bold green/][green/]")
+       exit()
       elif choice == "4":
         character_name = input("Enter the name of the character you would like to delete: ")
         character = find_character_by_name(character_name)
-      if character:
-        delete_character(character)
+        if character:
+         delete_character(character)
         break
       else:
         print("[bold red]Invalid choice.[bold red/][red/]")
