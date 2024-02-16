@@ -4,8 +4,6 @@ from db_utils import get_all_characters, find_character_by_name, add_item_to_inv
 from models import db, Character, Inventory
 
 
-from models import db
-
 def display_welcome_message():
   print("[green]Welcome to my app. [bold Green]This will be changed.[bold green/][green/]")
 
@@ -59,8 +57,9 @@ def display_character_menu(character):
   elif choice == "3":
     delete_item_from_inventory(character, input("Enter the item you would like to drop: "))
   elif choice == "4":
-  #   change_character_name(character, input("Enter the new name for your character: "))
-  # elif choice == "2":
+    new_name = input("Enter the new name for your character: ")
+    change_character_name(character, new_name)
+  elif choice == "2":
     display_main_menu()
   elif choice == "3":
     print("[bold green]Exiting the app.[bold green/][green/]")
@@ -70,43 +69,39 @@ def display_character_menu(character):
 
 
 def display_character_inventory(character):
-    inventory_items = Inventory.query.filter_by(character_id=character.id).all()
-    if inventory_items:
-        print(f"{character.name}'s Inventory:")
-        for item in inventory_items:
-            print(f"- {item.item}")
-    else:
-        print(f"{character.name}'s inventory is empty.")
+  inventory_items = Inventory.query.filter_by(character_id=character.id).all()
+  if inventory_items:
+    print(f"{character.name}'s Inventory:")
+    for item in inventory_items:
+     print(f"- {item.item}")
+  else:
+     print(f"{character.name}'s inventory is empty.")
 
 
 
 def add_item_to_inventory(character, item_name):
-    inventory = Inventory(
-        character_id=character.id,
-        item=item_name
-    )
-    db.session.add(inventory)
-    db.session.commit()
-    print(f"Added {item_name} to {character.name}'s inventory.")
+  inventory = Inventory(
+    character_id=character.id,
+    item=item_name
+  )
+  db.session.add(inventory)
+  db.session.commit()
+  print(f"Added {item_name} to {character.name}'s inventory.")
 
 
 def delete_item_from_inventory(character, item_name):
-    inventory_item = Inventory.query.filter_by(character_id=character.id, item=item_name).first()
-    if inventory_item:
-        db.session.delete(inventory_item)
-        db.session.commit()
-        print(f"Deleted {item_name} from {character.name}'s inventory.")
-    else:
-        print(f"{character.name} does not have {item_name} in their inventory.")
+  inventory_item = Inventory.query.filter_by(character_id=character.id, item=item_name).first()
+  if inventory_item:
+    db.session.delete(inventory_item)
+    db.session.commit()
+    print(f"Deleted {item_name} from {character.name}'s inventory.")
+  else:
+    print(f"{character.name} does not have {item_name} in their inventory.")
 
-
-
-
-
-
-
-
-
+def change_character_name(character, new_name):
+    character.name = new_name
+    db.session.commit()
+    print(f"Changed {character.name}'s name to {new_name}.")
 
 
 if __name__ == "__main__":

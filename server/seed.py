@@ -47,7 +47,7 @@ if __name__ == "__main__":
     db.session.commit()
 
     inventory2 = Inventory(
-      character_id=character1.id,
+      character_id=character2.id,
       item="Sword"
 
     )
