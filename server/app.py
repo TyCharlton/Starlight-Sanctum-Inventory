@@ -12,6 +12,8 @@ def display_main_menu():
   print("[bold green]1. Create a new character.[bold green/][green/]")
   print("[bold green]2. List all characters.[bold green/][green/]")
   print("[bold green]3. Exit.[bold green/][green/]")
+  print("[bold red]4. Delete Character.[bold red/][red/]")
+  
 
 def get_main_choice():
   return input("Enter your choice: ")
@@ -78,7 +80,6 @@ def display_character_inventory(character):
      print(f"{character.name}'s inventory is empty.")
 
 
-
 def add_item_to_inventory(character, item_name):
   inventory = Inventory(
     character_id=character.id,
@@ -87,7 +88,6 @@ def add_item_to_inventory(character, item_name):
   db.session.add(inventory)
   db.session.commit()
   print(f"Added {item_name} to {character.name}'s inventory.")
-
 
 def delete_item_from_inventory(character, item_name):
   inventory_item = Inventory.query.filter_by(character_id=character.id, item=item_name).first()
@@ -104,6 +104,18 @@ def change_character_name(character, new_name):
     print(f"Changed {character.name}'s name to {new_name}.")
 
 
+def create_new_character(name):
+    new_character = Character(name=name)
+    db.session.add(new_character)
+    db.session.commit()
+    print(f"Created new character: {new_character.name}")
+
+def delete_character(character):
+    db.session.delete(character)
+    db.session.commit()
+    print(f"Deleted character: {character.name}")
+
+
 if __name__ == "__main__":
   # gives app context at runtime to init migrate obj
   with app.app_context():
@@ -116,11 +128,18 @@ if __name__ == "__main__":
       choice = get_main_choice()
       print(choice)
       if choice == "1":
+        name = input("Enter the name of the new character: ")
+        create_new_character(name)
         print("[bold green]Creating a new character.[bold green/][green/]")
       elif choice == "2":
         print(display_all_characters())
       elif choice == "3":
         print("[bold green]Exiting the app.[bold green/][green/]")
+      elif choice == "4":
+        character_name = input("Enter the name of the character you would like to delete: ")
+        character = find_character_by_name(character_name)
+      if character:
+        delete_character(character)
         break
       else:
         print("[bold red]Invalid choice.[bold red/][red/]")
